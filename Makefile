@@ -21,6 +21,9 @@ NVCC_OPTS=-forward-unknown-to-host-compiler -ccbin=/cvmfs/sft.cern.ch/lcg/releas
 alpaka_cuda_vector_add: vectorAdd.cpp
 	nvcc -o alpaka_cuda_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_GPU_CUDA_ENABLED -I $(BOOST_INCLUDE_DIR) $(NVCC_OPTS)
 
+alpaka_sycl_cpu_vector_add: vectorAdd.cpp
+	icpx -o alpaka_sycl_cpu_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_SYCL_ONEAPI_CPU_ENABLED
+
 
 clean:
 	rm -rf alpaka-1.1.0
