@@ -9,8 +9,9 @@ hipify_vector_add: vector_add.cu
 	hipify-perl vector_add.cu > vector_add.hip
 	hipcc -o hipify_vector_add vector_add.hip
 
-sycl_vector_add: vector-add-buffers.cpp
-	icpx -o sycl_vector_add vector-add-buffers.cpp
+#SYCL seems to be happiest if clang is there already
+sycl_cpu_vector_add: vector-add-buffers.cpp
+	icpx -fsycl -o sycl_cpu_vector_add vector-add-buffers.cpp
 
 alpaka_cpu_vector_add: vectorAdd.cpp
 	clang++ -o alpaka_cpu_vector_add -std=c++20 vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
@@ -25,7 +26,7 @@ alpaka_cuda_vector_add: vectorAdd.cpp
 	nvcc -o alpaka_cuda_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_GPU_CUDA_ENABLED -I $(BOOST_INCLUDE_DIR) $(NVCC_OPTS)
 
 alpaka_sycl_cpu_vector_add: vectorAdd.cpp
-	icpx -o alpaka_sycl_cpu_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_SYCL_ONEAPI_CPU_ENABLED
+	icpx -fsycl -o alpaka_sycl_cpu_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_SYCL_ONEAPI_CPU -DALPAKA_ACC_SYCL_ENABLED
 
 
 clean:
