@@ -10,11 +10,23 @@ hipify_vector_add: vector_add.cu
 	hipcc -o hipify_vector_add vector_add.hip
 
 #SYCL seems to be happiest if clang is there already
+#On CERN lxplus
+#source /cvmfs/projects.cern.ch/intelsw/oneAPI/linux/all-setup.sh
+#setupATLAS; lsetup clang
 sycl_cpu_vector_add: vector-add-buffers.cpp
 	icpx -fsycl -o sycl_cpu_vector_add vector-add-buffers.cpp
 
+sycl_intel_vector_add: vector-add-buffers.cpp
+	icpx -fsycl -fsycl-targets=spir64 -o sycl_intel_vector_add vector-add-buffers.cpp
+
+sycl_cuda_vector_add: vector-add-buffers.cpp
+	icpx -fsycl -fsycl-targets=nvptx64-nvidia-cuda -o sycl_cuda_vector_add vector-add-buffers.cpp
+
+sycl_amd_vector_add: vector-add-buffers.cpp
+	icpx -fsycl -fsycl-targets=amdgcn-amd-amdhsa -Xsycl-target-backend --offload-arch=gfx1031 -o sycl_amd_vector_add vector-add-buffers.cpp
+
 alpaka_cpu_vector_add: vectorAdd.cpp
-	clang++ -o alpaka_cpu_vector_add -std=c++20 vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+	g++ -o alpaka_cpu_vector_add -std=c++20 vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 
 alpaka_hip_vector_add: vectorAdd.cpp
 	hipcc -o alpaka_hip_vector_add -std=c++20 vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_GPU_HIP_ENABLED
@@ -27,6 +39,12 @@ alpaka_cuda_vector_add: vectorAdd.cpp
 
 alpaka_sycl_cpu_vector_add: vectorAdd.cpp
 	icpx -fsycl -o alpaka_sycl_cpu_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_SYCL_ONEAPI_CPU -DALPAKA_ACC_SYCL_ENABLED
+
+alpaka_sycl_intel_vector_add: vectorAdd.cpp
+	icpx -fsycl -o alpaka_sycl_intel_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_SYCL_ONEAPI_GPU -DALPAKA_ACC_SYCL_ENABLED
+
+alpaka_sycl_cuda_vector_add: vectorAdd.cpp
+	icpx -fsycl -o alpaka_sycl_intel_vector_add vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_SYCL_ONEAPI_GPU -DALPAKA_ACC_SYCL_ENABLED
 
 
 clean:
