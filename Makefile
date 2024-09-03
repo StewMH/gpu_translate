@@ -49,6 +49,6 @@ alpaka_sycl_cuda_vector_add: vectorAdd.cpp
 
 clean:
 	rm -rf alpaka-1.1.0
-	rm -rf *tgz
-	rm -f *vector_add
-	rm -f *.cu *.hip *sycl *cpp
+	rm -rf *gz*
+	rm -f *vector_add*
+	rm -f *.cu* *.hip* *.sycl* *.cpp*
