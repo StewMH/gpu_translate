@@ -29,7 +29,7 @@ alpaka_cpu_vector_add: vectorAdd.cpp
 	g++ -o alpaka_cpu_vector_add -std=c++20 vectorAdd.cpp -I alpaka-2.0.0/include -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED -DALPAKA_HAS_STD_ATOMIC_REF
 
 alpaka_hip_vector_add: vectorAdd.cpp
-	hipcc -o alpaka_hip_vector_add -std=c++20 vectorAdd.cpp -I alpaka-1.1.0/include -DALPAKA_ACC_GPU_HIP_ENABLED
+	hipcc -o alpaka_hip_vector_add -std=c++20 vectorAdd.cpp -I alpaka-2.0.0/include -DALPAKA_ACC_GPU_HIP_ENABLED
 
 NVCC_OPTS=-forward-unknown-to-host-compiler -ccbin=`which g++` -DALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB=47 --extended-lambda --expt-relaxed-constexpr --display-error-number -Xcompiler -pthread -MD -x cu --std c++20
 
